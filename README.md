@@ -17,3 +17,20 @@ console.log(
     ).join("\n</li>\n<li>\n") + "\n</li>",
 );
 ```
+
+Nginx configuration
+
+```
+server {
+  ... # Other configuration
+
+  rewrite ^(/.*)\.html(\?.*)?$ $1$2 permanent;
+  rewrite ^/(.*)/$ /$1 permanent;
+
+  index index.html;
+  try_files $uri/index.html $uri.html $uri/ $uri =404;
+
+  error_page 404 /404.html;
+  error_page 500 502 503 504 /500.html;
+}
+```
