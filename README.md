@@ -24,11 +24,18 @@ Nginx configuration
 server {
   ... # Other configuration
 
-  rewrite ^(/.*)\.html(\?.*)?$ $1$2 permanent;
-  rewrite ^/(.*)/$ /$1 permanent;
+  rewrite ^/thoughts/0$ /2021/change permanent;
+  rewrite ^/thoughts/1$ /2021/stages-of-learning permanent;
+  rewrite ^/thoughts/2$ /2021/covid-and-faith permanent;
+  rewrite ^/thoughts/3$ /2021/on-trust permanent;
 
+  rewrite ^/(.*)/index$ /\$1 permanent;
+  rewrite ^/index$ / permanent;
+  rewrite ^(/.*)\.html$ \$1 permanent;
+  rewrite ^/(.*)/$ /\$1 permanent;
+  root "$directory";
   index index.html;
-  try_files $uri/index.html $uri.html $uri/ $uri =404;
+  try_files \$uri/index.html \$uri.html \$uri =404;
 
   error_page 404 /404.html;
   error_page 500 502 503 504 /500.html;
