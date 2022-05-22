@@ -38,3 +38,10 @@ ul, ol {
 li {
   margin-top: 5px;
 }
+
+aside, q, blockquote {
+  color: rgb(199, 199, 199);
+  margin-left: 20px;
+  padding-left: 10px;
+  border-left: rgb(199, 199, 199) 4px solid;
+}

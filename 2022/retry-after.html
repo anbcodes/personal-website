@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>Discovering the Retry-After header</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+</head>
+
+<body>
+  <main>
+    <h1>Discovering the Retry-After header</h1>
+
+    <p>May 21st, 2022</p>
+
+    <p>Recently I got a job on <a href="https://www.fiverr.com/users/anbcodes">fiverr</a> to scrape a website. The job was to extract some data from 32K different pages.</p>
+
+		<p>I started by writing a simple Deno script that fetched a page and extracted the data. After creating that, I put it in a loop to request each page and save all the information to a file.</p>
+
+		<p>This appeared to be working until my script failed to parse the file and threw a random error. I discovered that the server was returning <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429">429 Too Many Requests</a>. So I added a check to wait 20 seconds then try to continue requesting the pages.</p>
+
+		<p>This worked, but it wasn't the most efficient because I had just guessed 20 seconds and did not know how long the server needed me to wait. I ended up increasing it to 60 seconds because that appeared to always work: the next request was always able to get through.</p>
+
+		<p>I let this run for a while, but later stumbled apon the Retry-After header after doing some research about rate limiting. From <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After">MDN</a></p>
+
+		<blockquote>The Retry-After response HTTP header indicates how long the user agent should wait before making a follow-up request.</blockquote>
+
+		<p>It was perfect because I needed to know the amount of time to wait before retrying the request! So I added it into my script, and I think it ended up saving about 2-3 hours.</p>
+  </main>
+  
+  <footer>
+		<p>If you have a comment - email me at <a href="mailto:comments@anb.codes">comments@anb.codes</a></p>
+
+		<p class="pt-5 text-gray-400" xmlns:cc="http://creativecommons.org/ns#">
+			<a class="darklink-nopad" rel="cc:attributionURL" href="https://anb.codes/thoughts/0">This work</a
+			>
+			by
+			<a
+				class="darklink-nopad"
+				rel="cc:attributionURL dct:creator"
+				property="cc:attributionName"
+				href="https://anb.codes">anbcodes</a
+			>
+			is licensed under
+			<a
+				class="darklink-nopad"
+				href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1"
+				target="_blank"
+				rel="license noopener noreferrer"
+				style="display:inline-flex;"
+				>CC BY 4.0<img
+					style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+					src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
+					alt="cc by"
+				/><img
+					style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+					src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
+					alt="cc by"
+				/></a
+			>
+		</p>
+
+		<p>
+			<a href="/">Home</a>
+		</p>
+	</footer>
+  
+</body>
+
+</html>
