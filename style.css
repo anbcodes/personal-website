@@ -45,3 +45,12 @@ aside, q, blockquote {
   padding-left: 10px;
   border-left: rgb(199, 199, 199) 4px solid;
 }
+
+pre {
+  font-size: 18px;
+  border-radius: 0.5rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  border: white 1px solid;
+  padding: 1rem;
+}

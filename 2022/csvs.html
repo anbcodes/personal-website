@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>Handling CSVs</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+</head>
+
+<body>
+  <main>
+    <h1>Handling CSVs</h1>
+
+    <p>May 22nd, 2022</p>
+  
+    <p>Recently, I needed to create a large CSV. CSV is a format for storing data as a table which seperates each field with a comma and each row with a newline. For example a CSV file could look like this.</p>
+
+    <pre>
+name,age,pets
+Bob,21,dog
+Alice,19,cat</pre>
+
+    <p>Pretty simple right? It is until you need a comma (or quote) within the field. To avoid the comma problem you can put all the fields in quotes like this.</p>
+
+    <pre>
+"name","age","pets"
+"Bob","21","dog, parrot"
+"Alice","19","cat"</pre>
+
+    <p>It is slightly more complicated, but not too bad. But wait, what if I have a quote inside the field? After a bit of searching I discovered that you can escape a double quote by using two double quotes. Like this.</p>
+
+    <pre>
+"name","age","pets"
+"Bob ""The Coder""","21","dog, parrot"
+"Alice","19","cat"</pre>
+
+    <p>Now we are done! We can store arbitrary text in each field but some escaping is required.</p>
+
+  </main>
+  
+  <footer>
+		<p>If you have a comment - email me at <a href="mailto:comments@anb.codes">comments@anb.codes</a></p>
+
+		<p class="pt-5 text-gray-400" xmlns:cc="http://creativecommons.org/ns#">
+			<a class="darklink-nopad" rel="cc:attributionURL" href="https://anb.codes/thoughts/0">This work</a
+			>
+			by
+			<a
+				class="darklink-nopad"
+				rel="cc:attributionURL dct:creator"
+				property="cc:attributionName"
+				href="https://anb.codes">anbcodes</a
+			>
+			is licensed under
+			<a
+				class="darklink-nopad"
+				href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1"
+				target="_blank"
+				rel="license noopener noreferrer"
+				style="display:inline-flex;"
+				>CC BY 4.0<img
+					style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+					src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
+					alt="cc by"
+				/><img
+					style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+					src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
+					alt="cc by"
+				/></a
+			>
+		</p>
+
+		<p>
+			<a href="/">Home</a>
+		</p>
+	</footer>
+  
+</body>
+
+</html>
