@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>Controlling a LED Strip Using Equations</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+</head>
+
+<body>
+  <main>
+    <h1>Controlling a LED Strip Using Equations</h1>
+
+    <p>November 23rd, 2022</p>
+  
+    <p>I have an individually addressable LED strip, which I wanted to be able to control from my phone or computer.
+      The LED strip contains about 250 LEDs. I wanted a way to easily program them to any pattern,
+      so I came up with an expression language that lets you write things like.
+      <pre>
+t * 2 + i</pre>
+      Where <code>i</code> and <code>t</code> are special variables meaning the time and the index.
+      Assigning this equation to the hue of the lights would produce a rainbow pattern across the lights. (<a href="http://leds.anb.codes">try it out</a>).
+      This allows me to create all sorts of patterns on my LEDs without requiring a code update.
+    </p>
+
+    <h2>How it works</h2>
+
+    <p>First, here is a broad overview of the setup. I have a WS2812b LED strip which is connected to an Arduino MKR WiFi 1010 and a power supply
+      I also have a Raspberry Pi and a webcam. The website is hosted on Github pages.
+      The Arduino code is written in C++ and runs an interpreter which interprets a custom language (not the raw strings).
+      The website is written using SvelteKit, TailwindCSS, and Typescript. The website compiles the expressions into a stack-based binary language (which I describe below).
+      The Raspberry Pi runs websockify to proxy the WebSockets.
+    </p>
+
+    <h3>The Language</h3>
+    
+    <p>
+      The expression language is described <a href="http://leds.anb.codes">on the led site</a>,
+      but that language compiles to a binary language that looks a bit different. The binary language is stack-based. You push values onto the stack and then functions modify the values on the stack.
+      So for example to add two numbers, the "assembly" looks like this.
+    </p>
+      
+    <pre>
+VAL 10 # Push 10 onto the stack
+VAL 20 # Push 20 onto the stack
+ADD    # Pop two values on the stack and push the result</pre>
+
+    <p>The result of that "program" would be <code>30</code> on the stack. This is how you would implement <code>(10 + 20) * 3</code></p>
+
+    <pre>
+VAL 10 # Push 10 onto the stack  - Stack: [10]
+VAL 20 # Push 20 onto the stack  - Stack: [10, 20]
+ADD    # Add the two values      - Stack: [30]
+VAL 3  # Push 3 onto the stack   - Stack: [30, 3]
+MUL    # Multiply the two values - Stack: [90]</pre>
+
+
+    <p>
+      The language is very simple. It's all unsigned 32-bit integers when its compiled and it supports the following commands:
+      <code>SIN</code>, <code>ADD</code>, <code>SUB</code>, <code>MUL</code>, <code>DIV</code>, <code>SIN</code>, <code>POW</code>,
+			<code>MOD</code>, <code>IF</code>, <code>EQ</code>, <code>GT</code>, <code>LT</code>, <code>AND</code>, <code>OR</code>,
+			<code>VAL</code>, <code>VAR_T</code>, <code>VAR_I</code>, <code>END</code>.
+    </p>
+
+    <aside>
+      <code>VAL</code> is a special code that prefixes numbers. It is not a function.
+    </aside> 
+
+    <h3>The Website</h3>
+
+    <p>The website is written in SvelteKit, TailwindCSS, and Typescript and is hosted on GitHub Pages.
+      The website compiles the expressions to the stack language and sends them over WebSockets to the Raspberry Pi.
+      The compiler is pretty simple, the main part that probably doesn't work quite right is the order of operations.
+      The live stream comes from Twitch and I use OBS to broadcast it. The expressions are immediately sent to
+      the server as you type them in, but it always waits for one expression to send before sending another.
+    </p>
+
+		<aside>
+      Note: All the code that runs this setup is <a href="https://github.com/anbcodes/led-functions">on Github</a>
+    </aside>
+
+    <h2>Wrap up</h2>
+    <p>That's it! If you have more questions, look at <a href="https://github.com/anbcodes/led-functions">the code</a>.
+      It's not very nice code, but maybe you can understand it. I only spent a few days coding this, so there are probably many bugs.
+      Overall, it is a useful project for me and might be useful (or at least interesting) to someone else.
+    </p>
+  </main>
+  
+  <footer>
+		<p>If you have a comment - email me at <a href="mailto:comments@anb.codes">comments@anb.codes</a></p>
+
+		<p class="pt-5 text-gray-400" xmlns:cc="http://creativecommons.org/ns#">
+			<a class="darklink-nopad" rel="cc:attributionURL" href="https://anb.codes/thoughts/0">This work</a
+			>
+			by
+			<a
+				class="darklink-nopad"
+				rel="cc:attributionURL dct:creator"
+				property="cc:attributionName"
+				href="https://anb.codes">anbcodes</a
+			>
+			is licensed under
+			<a
+				class="darklink-nopad"
+				href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1"
+				target="_blank"
+				rel="license noopener noreferrer"
+				style="display:inline-flex;"
+				>CC BY 4.0<img
+					style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+					src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
+					alt="cc by"
+				/><img
+					style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+					src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
+					alt="cc by"
+				/></a
+			>
+		</p>
+
+		<p>
+			<a href="/">Home</a>
+		</p>
+	</footer>
+  
+</body>
+
+</html>

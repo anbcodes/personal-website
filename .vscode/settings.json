@@ -2,5 +2,12 @@
   "editor.formatOnSave": false,
   "html.format.wrapLineLength": 100,
   "html.format.preserveNewLines": false,
-  "html.format.endWithNewline": true
+  "html.format.endWithNewline": true,
+  "grammarly.selectors": [
+    {
+      "language": "html",
+      "scheme": "file",
+      "pattern": "2022/led-equations.html"
+    }
+  ]
 }

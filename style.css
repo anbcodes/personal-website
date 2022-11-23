@@ -53,6 +53,7 @@ pre {
   margin-right: 2rem;
   border: white 1px solid;
   padding: 1rem;
+  overflow-x: scroll;
 }
 
 code {
@@ -62,4 +63,5 @@ code {
   margin-right: 0.25rem;
   background-color: rgb(22, 22, 22);
   padding: 0px 0.25rem;
+  white-space: nowrap;
 }
