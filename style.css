@@ -14,6 +14,9 @@ body {
   max-width: 800px;
   font-size: large;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0px;
 }
 
 a {
@@ -44,6 +47,7 @@ aside, q, blockquote {
   margin-left: 20px;
   padding-left: 10px;
   border-left: rgb(199, 199, 199) 4px solid;
+  min-width: 0;
 }
 
 pre {
@@ -53,7 +57,8 @@ pre {
   margin-right: 2rem;
   border: white 1px solid;
   padding: 1rem;
-  overflow-x: scroll;
+  overflow-x: auto;
+  min-width: 0;
 }
 
 code {
